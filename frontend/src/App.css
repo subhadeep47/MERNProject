@@ -1,0 +1,62 @@
+*{
+  margin: 0;
+  padding: 0;
+  /* background: url(https://unsplash.com/photos/DqYw4KMZYOE/download) center center no-repeat;
+  background-size: cover; */
+  font-family: cursive;
+}
+
+/* Login.jsx */
+.logincontainer{
+  margin-top: 15rem;
+}
+
+.form-box{
+  width: auto;
+  padding: 50px;
+  border: 1px solid black;
+  border-radius: 10%;
+  box-shadow: 5px 5px black;
+}
+
+.login-title{
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+/* Signup.jsx */
+.signupcontainer{
+  margin-top: 10rem;
+}
+
+.signup-title{
+  margin-bottom: 20px;
+}
+
+
+#signbtn{
+  transition: .2s;
+}
+#signbtn:hover{
+  transform: scale(1.15);
+  transition-duration: 500ms;
+}
+
+#regiimg{
+  width: 100%;
+  height: auto;
+  border-radius: 50%;
+  /* transition-duration: 1s; */
+  overflow: hidden;;
+}
+
+/* #regiimg:hover{
+  height: 600px;
+  width: 600px;
+  transition-duration: 1s;
+} */
+
+@keyframes rotate {
+  from {transform: rotate(0deg);}
+  to {transform: scale(360deg);}
+}
