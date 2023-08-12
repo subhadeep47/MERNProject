@@ -6,23 +6,27 @@ const UserData = require('../database/connection');
 
 route.use(express.json());
 
-const Auth = (req, res, next) =>{
-    const {email, pass} = req.body;
-    UserData.findOne({email:email}).then((user)=>{
+const LoginAuth = async (req, res, next) =>{
+    try{
+        const {email, pass} = req.body;
+        const user = await UserData.findOne({email:email});
         console.log(user);
         if(pass===user.pass){
             console.log('Successfully logged in!!');
+            const cookie = await user.setToken();
+            console.log(cookie);
+            res.cookie('token', cookie);
             req.user = user;
             next();
         }
         else{
             res.status(401).json({error:'Invalid credential!!'});
         }
-    }).catch((err)=>{
+    }catch(err){
         res.status(401).json({error:'User not found!!'});
-    });
+    }
 }
 
 
 
-module.exports = Auth;
+module.exports = LoginAuth;

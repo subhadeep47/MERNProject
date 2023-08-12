@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
 
 const dburl = process.env.dburl
 
@@ -37,8 +38,25 @@ const schema = new mongoose.Schema({
             message:{type:String},
             date:{type:String}
         }
+    ],
+    tokens:[
+        {
+            token:{type:String}
+        }
     ]
 });
+
+schema.methods.setToken = async function(){
+    try{
+        console.log("from connection");
+        const token = jwt.sign({_id:this._id}, process.env.SECRET_KEY);
+        this.tokens = this.tokens.concat({token});
+        await this.save();
+        return token;
+    }catch(err){
+        console.log(err);
+    }
+}
 
 const UserData = new mongoose.model('userdatas', schema);
 

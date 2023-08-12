@@ -1,23 +1,49 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../App";
 
 const Login = (props)=> {
   const navigate = useNavigate();
   const [udata, setUdata] = useState({email:'', pass:''});
+  const {state, dispatch} = useContext(UserContext);
 
-  const handleInput = (e)=>{
-    let key = e.target.name;
-    let value = e.target.value;
-    setUdata({...udata,[key]:value});
-  }
-  
+  useEffect(()=>{
+      async function fetchData(){
+        try{
+          const res = await axios.get('/getdata', {withCredentials:true});
+          if(res.data.message!=='Not signed in'){
+            navigate(`/userhomepage/${res.data.name}`);
+          }
+          else{
+            console.log("fetchdata");
+            console.log(res.data.message);
+          }
+        }catch(err){
+          console.log('not signed in');;
+        }
+      }
+      fetchData();
+    }, []);
+
+    const handleInput = (e)=>{
+      let key = e.target.name;
+      let value = e.target.value;
+      setUdata({...udata,[key]:value});
+    }
+
   const handleSubmit = (e)=>{
     e.preventDefault();
     axios.post('/login', udata).then((res)=>{
       console.log(res);
-      navigate('/userhomepage', {state:res.data});
-    }).catch(err=>console.log(err))
+      window.localStorage.setItem('isLoggedIn', true);
+      dispatch({type:'user', value:{isLoggedIn:true}});
+      navigate(`/userhomepage/${res.data.name}`);
+    }).catch(err=>{
+        console.log(err);
+        window.alert(err.response.data.error);
+        navigate('/login');
+      })
     
   }
 
