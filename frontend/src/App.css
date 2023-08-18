@@ -56,6 +56,57 @@
   transition-duration: 1s;
 } */
 
+/* UserHomeFeed.jsx */
+.addPostContainer{
+  display: flex;
+  justify-content: center;
+}
+
+.postBox{
+  border-radius: 25px;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.addButton{
+  height: 30px;
+  width: 50px;
+  position: relative;
+  margin-top: 10px;
+  margin-left: 50%;
+  border-radius: 15px;
+  transform: translate(-50%,-50%);
+}
+
+.messageContainer{
+  display: grid;
+  place-content: center;
+  grid-template-columns: auto;
+  border: 2px solid red;
+  border-radius: 5px;
+  padding: 20px;
+}
+
+.feedPosts{
+  border: 2px solid black;
+  margin: 20px;
+}
+
+.userName{
+  display: inline-block;
+  padding: 10px;
+  border: 2px solid blue;
+  border-radius: 25px;
+}
+
+.post{
+  display: inline-block;
+  padding: 15px;
+}
+
+
+
+
 @keyframes rotate {
   from {transform: rotate(0deg);}
   to {transform: scale(360deg);}

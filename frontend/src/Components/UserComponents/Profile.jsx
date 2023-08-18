@@ -1,12 +1,9 @@
-import React, { useContext } from "react";
-import { UserContext } from "../../App";
+import React from "react";
 
-const Profile = (props) =>{
-    const {state} = useContext(UserContext);
-
+const Profile = ({data}) =>{
     return(
         <>
-            <h1>This is  profile page</h1>
+            <h1 className="text-center">This is {data.name}'s profile page</h1>
         </>
     )
 }

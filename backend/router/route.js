@@ -43,7 +43,45 @@ route.get('/logout', UserAuth, async (req,res)=>{
     res.clearCookie('token');
     const name = req.user.name;
     await UserData.updateOne({name:name}, {$unset:{tokens:""}});
-    res.json("Successfully logeed out!!");
+    res.json("Successfully logged out!!");
+})
+
+route.post('/addPost', async (req,res)=>{
+    try{
+        const {_id, post} = req.body;
+        let currentdate = new Date(); 
+        let datetime = currentdate.getDate() + "/"
+                + (currentdate.getMonth()+1)  + "/" 
+                + currentdate.getFullYear() + " @ "  
+                + currentdate.getHours() + ":"  
+                + currentdate.getMinutes() + ":" 
+                + currentdate.getSeconds();
+        await UserData.updateOne({_id:_id},{$push:{messages:{message:post,date:datetime}}});
+        const data = await UserData.findOne({_id:_id});
+        res.send(data);
+    }catch(err){
+        res.status(401).json({err:"Problem with adding post"});
+    }
+})
+
+route.post('/deletePost', async (req,res)=>{
+    try{
+        const {msg_id,_id} = req.body;
+        await UserData.updateOne({_id:_id},{$pull:{messages:{_id:msg_id}}});
+        const data = await UserData.findOne({_id:_id});
+        res.send(data);
+    }catch(err){
+        res.status(401).json({err:"Problem with delete post"});
+    }
+})
+
+route.get('/getFeedData', async (req,res)=>{
+    try{
+        const data = await UserData.find({});
+        res.send(data);
+    }catch(err){
+        res.status(401).json({err:"Problem with getting data"});
+    }
 })
 
 module.exports = route;

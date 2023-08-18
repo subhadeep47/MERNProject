@@ -1,10 +1,6 @@
-import React, { useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { UserContext } from "../App";
+import React, { useEffect } from "react";
 
 const Home = ()=>{
-    const navigate = useNavigate();
-    const {state} = useContext(UserContext);
 
     useEffect(()=>{
         console.log();

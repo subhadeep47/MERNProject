@@ -1,23 +1,28 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import UserNavbar from "./UserNavbar"
+import UserHomeFeed from "./UserHomeFeed";
 import Profile from "./Profile";
+import { UserContext } from "../../App";
 
 const UserHomePage = () =>{
     const navigate = useNavigate();
+    const {state} = useContext(UserContext);
+    const [udata,setUdata] = useState({});
 
     useEffect(()=>{
         async function fetchData(){
             try{
               const res = await axios.get('/getdata', {withCredentials:true});
-              if(res.data.message!=='Not signed in'){
-                navigate(`/userhomepage/${res.data.name}`);
+              if(res.data.message==='Not signed in'){
+                window.alert("You are not signed in!!")
+                navigate('/login');
               }
               else{
-                console.log("fetchdata");
-                console.log(res.data.message);
-              }  
+                setUdata(res.data);
+                navigate(`/userhomepage/${res.data.name}`);
+              }
             }catch(err){
               console.log('not signed in');;
             }
@@ -27,9 +32,10 @@ const UserHomePage = () =>{
 
     return(
         <>
-            <UserNavbar/>
+            {state.isLoggedIn ? <UserNavbar/> : ''}
             <Routes>
-                <Route path={'/profile'} element={<Profile/>}/>
+              <Route exact path="/" element={<UserHomeFeed data={udata}/>}/>
+                <Route exact path='/profile' element={<Profile data={udata}/>}/>
             </Routes>
         </>
     )

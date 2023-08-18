@@ -6,21 +6,21 @@ import { UserContext } from "../App";
 const Login = (props)=> {
   const navigate = useNavigate();
   const [udata, setUdata] = useState({email:'', pass:''});
-  const {state, dispatch} = useContext(UserContext);
+  const {dispatch} = useContext(UserContext);
 
   useEffect(()=>{
       async function fetchData(){
         try{
           const res = await axios.get('/getdata', {withCredentials:true});
-          if(res.data.message!=='Not signed in'){
-            navigate(`/userhomepage/${res.data.name}`);
-          }
-          else{
+          if(res.data.message==='Not signed in'){
             console.log("fetchdata");
             console.log(res.data.message);
           }
+          else{
+            navigate(`/userhomepage/${res.data.name}`);
+          }
         }catch(err){
-          console.log('not signed in');;
+          console.log(err);
         }
       }
       fetchData();
