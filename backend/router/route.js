@@ -35,7 +35,7 @@ route.post('/login', LoginAuth, (req,res)=>{
 })
 
 route.get('/getdata', UserAuth, (req,res)=>{
-    console.log("from getdata");
+    // console.log("from getdata");
     res.send(req.user);
 })
 
@@ -56,8 +56,8 @@ route.post('/addPost', async (req,res)=>{
                 + currentdate.getHours() + ":"  
                 + currentdate.getMinutes() + ":" 
                 + currentdate.getSeconds();
-        await UserData.updateOne({_id:_id},{$push:{messages:{message:post,date:datetime}}});
-        const data = await UserData.findOne({_id:_id});
+        await UserData.updateOne({_id:_id},{$push:{messages:{message:post,like:0,date:datetime}}});
+        const data = await UserData.findOne({_id:_id},{pass:0,cpass:0,tokens:0});
         res.send(data);
     }catch(err){
         res.status(401).json({err:"Problem with adding post"});
@@ -68,7 +68,7 @@ route.post('/deletePost', async (req,res)=>{
     try{
         const {msg_id,_id} = req.body;
         await UserData.updateOne({_id:_id},{$pull:{messages:{_id:msg_id}}});
-        const data = await UserData.findOne({_id:_id});
+        const data = await UserData.findOne({_id:_id},{pass:0,cpass:0,tokens:0});
         res.send(data);
     }catch(err){
         res.status(401).json({err:"Problem with delete post"});
@@ -77,11 +77,42 @@ route.post('/deletePost', async (req,res)=>{
 
 route.get('/getFeedData', async (req,res)=>{
     try{
-        const data = await UserData.find({});
+        const data = await UserData.find({},{pass:0,cpass:0,tokens:0}).sort({'messages.date':-1});
         res.send(data);
     }catch(err){
         res.status(401).json({err:"Problem with getting data"});
     }
 })
+
+route.post('/like', async (req,res)=>{
+    try{
+        await UserData.updateOne({'messages._id':req.body.msg_id},{$inc:{'messages.$.like':1}});
+        await UserData.updateOne({_id:req.body.my_id},{$push:{likedMessages:{msgid:req.body.msg_id}}});
+        const feed = await UserData.find({},{pass:0,cpass:0,tokens:0}).sort({'messages.date':-1});
+        const user = await UserData.findOne({_id:req.body.my_id},{pass:0,cpass:0,tokens:0});
+        const data = {feed:feed,user:user};
+        res.send(data);
+    }catch(err){
+        console.log(err);
+        res.status(401).json({err:err});
+    }
+})
+
+route.post('/unlike', async (req,res)=>{
+    try{
+        await UserData.updateOne({'messages._id':req.body.msg_id},{$inc:{'messages.$.like':-1}});
+        await UserData.updateOne({_id:req.body.my_id},{$pull:{likedMessages:{msgid:req.body.msg_id}}});
+        const feed = await UserData.find({},{pass:0,cpass:0,tokens:0}).sort({'messages.date':-1});
+        const user = await UserData.findOne({_id:req.body.my_id},{pass:0,cpass:0,tokens:0});
+        const data = {feed:feed,user:user};
+        res.send(data);
+    }catch(err){
+        console.log(err);
+        res.status(401).json({err:err});
+    }
+})
+
+
+
 
 module.exports = route;

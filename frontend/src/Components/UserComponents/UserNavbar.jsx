@@ -13,18 +13,22 @@ const UserNavbar = () =>{
                     </button>
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li className="nav-item">
-                            <NavLink className="nav-link" to={'/userhomepage/'+param.id+'/profile'} style={({ isActive }) => ({ 
-                                        color: isActive ? 'blue' : 'black', fontWeight: isActive ? 'bold' : 'normal' })}>Profile</NavLink>
-                        </li>
-                        <li className="nav-item">
-                            <NavLink className="nav-link" to="contact" style={({ isActive }) => ({ 
-                                        color: isActive ? 'blue' : 'black', fontWeight: isActive ? 'bold' : 'normal' })}>Contact</NavLink>
-                        </li>
-                        <li className="nav-item">
-                            <NavLink className="nav-link" to="/logout" style={({ isActive }) => ({ 
-                                        color: isActive ? 'blue' : 'black', fontWeight: isActive ? 'bold' : 'normal' })}>Logout</NavLink>
-                        </li>
+                            <li className="nav-item">
+                                <NavLink className="nav-link" to={'/userhomepage/'+param.id} end style={({ isActive }) => ({ 
+                                            color: isActive ? 'blue' : 'black', fontWeight: isActive ? 'bold' : 'normal' })}>Home</NavLink>
+                            </li>
+                            <li className="nav-item">
+                                <NavLink className="nav-link" to={'/userhomepage/'+param.id+'/profile'} style={({ isActive }) => ({ 
+                                            color: isActive ? 'blue' : 'black', fontWeight: isActive ? 'bold' : 'normal' })}>Profile</NavLink>
+                            </li>
+                            <li className="nav-item">
+                                <NavLink className="nav-link" to="contact" style={({ isActive }) => ({ 
+                                            color: isActive ? 'blue' : 'black', fontWeight: isActive ? 'bold' : 'normal' })}>Contact</NavLink>
+                            </li>
+                            <li className="nav-item">
+                                <NavLink className="nav-link" to="/logout" style={({ isActive }) => ({ 
+                                            color: isActive ? 'blue' : 'black', fontWeight: isActive ? 'bold' : 'normal' })}>Logout</NavLink>
+                            </li>
                         </ul>
                     </div>
                 </div>

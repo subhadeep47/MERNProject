@@ -71,7 +71,6 @@
 .addButton{
   height: 30px;
   width: 50px;
-  position: relative;
   margin-top: 10px;
   margin-left: 50%;
   border-radius: 15px;
@@ -82,18 +81,18 @@
   display: grid;
   place-content: center;
   grid-template-columns: auto;
-  border: 2px solid red;
-  border-radius: 5px;
   padding: 20px;
 }
 
 .feedPosts{
   border: 2px solid black;
   margin: 20px;
+  padding: 15px;
 }
 
 .userName{
-  display: inline-block;
+  display: block;
+  width: max-content;
   padding: 10px;
   border: 2px solid blue;
   border-radius: 25px;
@@ -101,9 +100,28 @@
 
 .post{
   display: inline-block;
-  padding: 15px;
+  padding: 10px;
 }
 
+.likeButton{
+  display: inline-block;
+}
+
+
+/* Profile.jsx */
+
+.myPosts{
+  display: grid;
+  place-content: center;
+  grid-template-columns: 1fr 1fr 1fr;
+  text-align: center;
+  padding: 25px;
+}
+
+.myPost{
+  margin: 15px;
+  padding: 15px;
+}
 
 
 

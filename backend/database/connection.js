@@ -36,12 +36,18 @@ const schema = new mongoose.Schema({
     messages:[
         {
             message:{type:String},
+            like:{type:Number},
             date:{type:String}
         }
     ],
     tokens:[
         {
             token:{type:String}
+        }
+    ],
+    likedMessages:[
+        {
+            msgid:{type:String},
         }
     ]
 });

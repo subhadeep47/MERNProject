@@ -10,6 +10,7 @@ const UserHomePage = () =>{
     const navigate = useNavigate();
     const {state} = useContext(UserContext);
     const [udata,setUdata] = useState({});
+    
 
     useEffect(()=>{
         async function fetchData(){
@@ -21,7 +22,7 @@ const UserHomePage = () =>{
               }
               else{
                 setUdata(res.data);
-                navigate(`/userhomepage/${res.data.name}`);
+                navigate(window.location.pathname);
               }
             }catch(err){
               console.log('not signed in');;

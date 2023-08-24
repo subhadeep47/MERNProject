@@ -38,14 +38,23 @@ const UserHomeFeed = ({data})=>{
         })
     }
 
-    const handleDelete = (e)=>{
-        const deleteData = {msg_id:e.target.value,_id:userData._id};
-        axios.post('/deletePost', deleteData).then((res)=>{
-            window.alert('Successfully deleted the post');
-            setUserData(res.data);
-        }).catch((err)=>{
-            window.alert(err.response.data.err);
-        })
+    const handleLike = (e)=>{
+        if(!userData.likedMessages.some(msg=>msg.msgid===e.target.dataset.msgid)){
+            axios.post('/like',{msg_id:e.target.dataset.msgid,user_id:e.target.dataset.userid,my_id:userData._id}).then((res)=>{
+                setFeedData(res.data.feed);
+                setUserData(res.data.user);
+            }).catch((err)=>{
+                console.log(err);
+            })
+        }
+        else{
+            axios.post('/unlike',{msg_id:e.target.dataset.msgid,user_id:e.target.dataset.userid,my_id:userData._id}).then((res)=>{
+                setFeedData(res.data.feed);
+                setUserData(res.data.user);
+            }).catch((err)=>{
+                console.log(err);
+            })
+        }
     }
 
     return(
@@ -68,6 +77,9 @@ const UserHomeFeed = ({data})=>{
                                             <div className="userName">{item1.name}</div>
                                             <div className="post">
                                                 {item2.message}<br/>Added, {item2.date}
+                                            </div>
+                                            <div>
+                                                <button className="likeButton" data-userid={item1._id} data-msgid={item2._id} onClick={handleLike}>{item2.like} Like</button>
                                             </div>
                                         </div>
                                     </>

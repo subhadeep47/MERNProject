@@ -13,10 +13,10 @@ const UserAuth = async (req,res,next) =>{
     }
     else{
         try{
-            console.log('from userauth');
+            // console.log('from userauth');
             const token = req.cookies.token;
             const verify = jwt.verify(token,process.env.SECRET_KEY);
-            const user = await UserData.findOne({_id:verify._id, 'tokens.token':token});
+            const user = await UserData.findOne({_id:verify._id, 'tokens.token':token}, {pass:0,cpass:0,tokens:0});
             if(user){
                 req.user = user;
                 next();
