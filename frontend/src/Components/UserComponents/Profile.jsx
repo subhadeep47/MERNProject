@@ -3,6 +3,7 @@ import axios from "axios";
 
 const Profile = ({data}) =>{
     const [userData,setUserData] = useState({});
+    const [editMessage, setEditMessage] = useState({msg:''});
 
     useEffect(()=>{
         setUserData(data);
@@ -20,24 +21,66 @@ const Profile = ({data}) =>{
         }
     }
 
+    const handleEdit = (e)=>{
+        setEditMessage({msg:e.target.dataset.msg})
+        document.getElementById('post'+e.target.value).style.display = 'none';
+        document.getElementById('editForm'+e.target.value).style.display = 'block';
+    }
+
+    const handleCancelEdit = (e)=>{
+        e.preventDefault();
+        document.getElementById('post'+e.target.value).style.display = 'block';
+        document.getElementById('editForm'+e.target.value).style.display = 'none';
+    }
+
+    const handleEditMessageInput = (e)=>{
+        setEditMessage({msg:e.target.value});
+    }
+
+    const handleEditMessageSubmit = (e)=>{
+        e.preventDefault();
+        const data = {msg_id:e.target.dataset.value, msg:editMessage.msg, my_id:userData._id};
+        axios.post('/edit', data).then((res)=>{
+            setUserData(res.data);
+            document.getElementById('post'+e.target.dataset.value).style.display = 'block';
+            document.getElementById('editForm'+e.target.dataset.value).style.display = 'none';
+        }).catch((err)=>{
+            console.log(err);
+        })
+    }
+
     return(
         <>
             <h1 className="text-center">This is {userData.name}'s profile page</h1>
-            <div className="myPosts">
+            <div className="myPostContainer">
                 {userData.messages && userData.messages.map((post,ind)=>{
+                    const editPostId = "editForm"+post._id;
+                    const postId = "post"+post._id;
                     return(
                         <>
                             <div className="myPost">
                                 <div className="myName">You</div>
-                                <div className="post">
-                                    {post.message} <br/>
-                                    Date added, {post.date}
-                                </div>
-                                <div className="totalLike">
+                                <div id={postId} className="postContent">
+                                    <div className="postMsg">
+                                        {post.message} <br/>
+                                        Date added, {post.date}
+                                    </div><br/>
+                                    <div className="totalLike">
                                     Total like, {post.like}
+                                    </div><br/>
+                                    <div className="postDeleteBtn">
+                                        <button className="dltbtn" value={post._id} onClick={handleDelete}>Delete</button>
+                                    </div>
+                                    <div className="postEditBtn">
+                                        <button className="editbtn" data-msg={post.message} value={post._id} onClick={handleEdit}>Edit</button>
+                                    </div>
                                 </div>
-                                <div className="postDelete">
-                                    <button className="dltbtn" value={post._id} onClick={handleDelete}>Delete</button>
+                                <div id={editPostId} className="editPost">
+                                    <form id='editForm' method="post" data-value={post._id} onSubmit={handleEditMessageSubmit}>
+                                        <textarea className='editText' form='editForm' value={editMessage.msg} onChange={handleEditMessageInput}/><br/>
+                                        <button className="cancelEditBtn" value={post._id} onClick={handleCancelEdit}>Cancel</button>
+                                        <button className="saveEditBtn" type="submit">Save</button>
+                                    </form>
                                 </div>
                             </div>
                         </>

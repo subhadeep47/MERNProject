@@ -68,6 +68,7 @@ route.post('/deletePost', async (req,res)=>{
     try{
         const {msg_id,_id} = req.body;
         await UserData.updateOne({_id:_id},{$pull:{messages:{_id:msg_id}}});
+        await UserData.updateMany({}, {$pull:{likedMessages:{msgid:msg_id}}})
         const data = await UserData.findOne({_id:_id},{pass:0,cpass:0,tokens:0});
         res.send(data);
     }catch(err){
@@ -112,7 +113,16 @@ route.post('/unlike', async (req,res)=>{
     }
 })
 
-
+route.post('/edit', async (req,res)=>{
+    try{
+        const {msg_id, msg, my_id} = req.body;
+        await UserData.updateOne({'messages._id':msg_id},{$set:{'messages.$.message':msg}});
+        const user = await UserData.findOne({_id:my_id},{pass:0,cpass:0,tokens:0});
+        res.send(user);
+    }catch(err){
+        res.status(401).json({err:err});
+    }
+})
 
 
 module.exports = route;

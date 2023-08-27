@@ -82,10 +82,13 @@
   place-content: center;
   grid-template-columns: auto;
   padding: 20px;
+  margin-left: 15%;
+  margin-right: 15%;
 }
 
-.feedPosts{
+.feedPost{
   border: 2px solid black;
+  border-radius: 12px;
   margin: 20px;
   padding: 15px;
 }
@@ -94,35 +97,84 @@
   display: block;
   width: max-content;
   padding: 10px;
+  margin-left: 10px;
   border: 2px solid blue;
   border-radius: 25px;
 }
 
-.post{
+.feedPostContent{
   display: inline-block;
   padding: 10px;
 }
 
 .likeButton{
   display: inline-block;
+  margin-left: 10px;
 }
 
 
 /* Profile.jsx */
 
-.myPosts{
+.myPostContainer{
   display: grid;
   place-content: center;
-  grid-template-columns: 1fr 1fr 1fr;
-  text-align: center;
+  grid-template-columns: 1fr;
   padding: 25px;
+  margin-left: 25%;
+  margin-right: 10%;
+}
+
+.myName{
+  display: block;
+  width: max-content;
+  padding: 10px;
+  margin-left: 25px;
+  border: 2px solid blue;
+  border-radius: 25px;
 }
 
 .myPost{
   margin: 15px;
   padding: 15px;
+  border: 2px solid black;
+  border-radius: 12px;
 }
 
+.postContent{
+  padding: 25px;
+}
+
+.postDeleteBtn{
+  display: inline-block;
+}
+
+.postEditBtn{
+  display: inline-block;
+  margin-left: 5px;
+}
+
+.editPost{
+  display: none;
+  margin-top: 15px;
+  padding: 25px;
+}
+
+.editText{
+  padding: 10px;
+  margin-bottom: 10px;
+  resize: none;
+  outline: none;
+  overflow-y: scroll;
+  border-radius: 10px;
+  border-top: 0px;
+  border-bottom: 0px;
+  height: 200px;
+  width: 50vw;
+}
+
+.saveEditBtn{
+  margin-left: 5px;
+}
 
 
 @keyframes rotate {

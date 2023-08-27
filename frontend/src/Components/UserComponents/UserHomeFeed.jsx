@@ -73,9 +73,9 @@ const UserHomeFeed = ({data})=>{
                             {item1.messages.map((item2,ind2)=>{
                                 return(
                                     <>
-                                        <div className="feedPosts">
+                                        <div className="feedPost">
                                             <div className="userName">{item1.name}</div>
-                                            <div className="post">
+                                            <div className="feedPostContent">
                                                 {item2.message}<br/>Added, {item2.date}
                                             </div>
                                             <div>
