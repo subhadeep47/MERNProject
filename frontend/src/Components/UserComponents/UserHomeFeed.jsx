@@ -1,10 +1,12 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import Popup from "./Popup";
 
 const UserHomeFeed = ({data})=>{
     const [postData,setPostData] = useState({_id:'', post:''});
     const [userData,setUserData] = useState({});
     const [feedData, setFeedData] = useState();
+    const [popupData, setPopupData] = useState({status:false, data:{}});
 
     useEffect(()=>{
         async function fetchFeedData(){
@@ -57,6 +59,19 @@ const UserHomeFeed = ({data})=>{
         }
     }
 
+    const handlePopup = (e)=>{
+        if(popupData.status){
+            setPopupData({status:false,data:{}});
+        }
+        else{
+            setPopupData({status:true,data:{
+                name:e.target.dataset.username,
+                email:e.target.dataset.useremail,
+                number:e.target.dataset.usernumber
+            }});
+        }
+    }
+
     return(
         <>
         <div className="addPostContainer">
@@ -74,7 +89,10 @@ const UserHomeFeed = ({data})=>{
                                 return(
                                     <>
                                         <div className="feedPost">
-                                            <div className="userName">{item1.name}</div>
+                                            <div className="userName" onClick={handlePopup} data-username={item1.name}
+                                            data-useremail={item1.email} data-usernumber={item1.number}>
+                                                {item1.name}
+                                            </div>
                                             <div className="feedPostContent">
                                                 {item2.message}<br/>Added, {item2.date}
                                             </div>
@@ -92,6 +110,7 @@ const UserHomeFeed = ({data})=>{
                     return(<></>);
                 }
             })}
+            {popupData.status && (<Popup udata = {popupData.data} handlePopup={handlePopup} />)}
         </div> 
         </>
     )
