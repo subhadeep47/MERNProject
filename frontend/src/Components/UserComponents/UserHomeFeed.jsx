@@ -7,12 +7,15 @@ const UserHomeFeed = ({data})=>{
     const [userData,setUserData] = useState({});
     const [feedData, setFeedData] = useState();
     const [popupData, setPopupData] = useState({status:false, data:{}});
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(()=>{
         async function fetchFeedData(){
             try{
+                setIsLoading(true);
                 const res = await axios.get('/getFeedData');
                 setFeedData(res.data);
+                setIsLoading(false);
             }catch(err){
                 console.log(err);
             }
@@ -41,7 +44,7 @@ const UserHomeFeed = ({data})=>{
     }
 
     const handleLike = (e)=>{
-        if(!userData.likedMessages.some(msg=>msg.msgid===e.target.dataset.msgid)){
+        if(!userData.likedMessages.includes(e.target.dataset.msgid)){
             axios.post('/like',{msg_id:e.target.dataset.msgid,user_id:e.target.dataset.userid,my_id:userData._id}).then((res)=>{
                 setFeedData(res.data.feed);
                 setUserData(res.data.user);
@@ -81,6 +84,7 @@ const UserHomeFeed = ({data})=>{
             </form>
         </div>
         <div className="messageContainer">
+            {isLoading && <div>It's loading</div>}
             {feedData && feedData.map((item1,ind1)=>{
                 if(item1._id!==userData._id){
                     return(
@@ -94,7 +98,7 @@ const UserHomeFeed = ({data})=>{
                                                 {item1.name}
                                             </div>
                                             <div className="feedPostContent">
-                                                {item2.message}<br/>Added, {item2.date}
+                                                {item2.message}<br /><br />Added, {item2.date}
                                             </div>
                                             <div>
                                                 <button className="likeButton" data-userid={item1._id} data-msgid={item2._id} onClick={handleLike}>{item2.like} Like</button>
@@ -107,7 +111,7 @@ const UserHomeFeed = ({data})=>{
                     )
                 }
                 else{
-                    return(<></>);
+                    return(null);
                 }
             })}
             {popupData.status && (<Popup udata = {popupData.data} handlePopup={handlePopup} />)}

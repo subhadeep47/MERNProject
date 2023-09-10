@@ -88,7 +88,7 @@ route.get('/getFeedData', async (req,res)=>{
 route.post('/like', async (req,res)=>{
     try{
         await UserData.updateOne({'messages._id':req.body.msg_id},{$inc:{'messages.$.like':1}});
-        await UserData.updateOne({_id:req.body.my_id},{$push:{likedMessages:{msgid:req.body.msg_id}}});
+        await UserData.updateOne({_id:req.body.my_id},{$push:{likedMessages:req.body.msg_id}});
         const feed = await UserData.find({},{pass:0,cpass:0,tokens:0}).sort({'messages.date':-1});
         const user = await UserData.findOne({_id:req.body.my_id},{pass:0,cpass:0,tokens:0});
         const data = {feed:feed,user:user};
@@ -102,7 +102,7 @@ route.post('/like', async (req,res)=>{
 route.post('/unlike', async (req,res)=>{
     try{
         await UserData.updateOne({'messages._id':req.body.msg_id},{$inc:{'messages.$.like':-1}});
-        await UserData.updateOne({_id:req.body.my_id},{$pull:{likedMessages:{msgid:req.body.msg_id}}});
+        await UserData.updateOne({_id:req.body.my_id},{$pull:{likedMessages:req.body.msg_id}});
         const feed = await UserData.find({},{pass:0,cpass:0,tokens:0}).sort({'messages.date':-1});
         const user = await UserData.findOne({_id:req.body.my_id},{pass:0,cpass:0,tokens:0});
         const data = {feed:feed,user:user};
@@ -113,11 +113,22 @@ route.post('/unlike', async (req,res)=>{
     }
 })
 
-route.post('/edit', async (req,res)=>{
+route.post('/editmsg', async (req,res)=>{
     try{
         const {msg_id, msg, my_id} = req.body;
         await UserData.updateOne({'messages._id':msg_id},{$set:{'messages.$.message':msg}});
         const user = await UserData.findOne({_id:my_id},{pass:0,cpass:0,tokens:0});
+        res.send(user);
+    }catch(err){
+        res.status(401).json({err:err});
+    }
+})
+
+route.post('/edituser', async (req, res)=>{
+    try{
+        const {_id, name, email, number} = req.body;
+        await UserData.updateOne({_id:_id}, {$set:{name:name,email:email,number:number}});
+        const user = await UserData.findOne({_id:_id},{pass:0,cpass:0,tokens:0});
         res.send(user);
     }catch(err){
         res.status(401).json({err:err});

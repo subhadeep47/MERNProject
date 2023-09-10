@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import EditUserPopup from "./EditUserPopup";
 
 const Profile = ({data}) =>{
     const [userData,setUserData] = useState({});
     const [editMessage, setEditMessage] = useState({msg:''});
+    const [popupData, setPopupData] = useState({status:false, data:{}})
 
     useEffect(()=>{
         setUserData(data);
@@ -40,7 +42,7 @@ const Profile = ({data}) =>{
     const handleEditMessageSubmit = (e)=>{
         e.preventDefault();
         const data = {msg_id:e.target.dataset.value, msg:editMessage.msg, my_id:userData._id};
-        axios.post('/edit', data).then((res)=>{
+        axios.post('/editmsg', data).then((res)=>{
             setUserData(res.data);
             document.getElementById('post'+e.target.dataset.value).style.display = 'block';
             document.getElementById('editForm'+e.target.dataset.value).style.display = 'none';
@@ -49,9 +51,21 @@ const Profile = ({data}) =>{
         })
     }
 
+    const handleEditUserPopup = (e)=>{
+        if(popupData.status){
+            setPopupData({...popupData, status:false});
+        }
+        else{
+            setPopupData({status:true, data:userData});
+        }
+    }
+
     return(
         <>
             <h1 className="text-center">This is {userData.name}'s profile page</h1>
+            <div className="editProfile">
+                <button className="editProfilebtn" onClick={handleEditUserPopup}>Edit Profile</button>
+            </div>
             <div className="myPostContainer">
                 {userData.messages && userData.messages.map((post,ind)=>{
                     const editPostId = "editForm"+post._id;
@@ -62,7 +76,7 @@ const Profile = ({data}) =>{
                                 <div className="myName">You</div>
                                 <div id={postId} className="postContent">
                                     <div className="postMsg">
-                                        {post.message} <br/>
+                                        {post.message} <br /><br />
                                         Date added, {post.date}
                                     </div><br/>
                                     <div className="totalLike">
@@ -87,6 +101,7 @@ const Profile = ({data}) =>{
                     )
                 })}
             </div>
+            {popupData.status && <EditUserPopup data={popupData.data} handleEditUserPopup={handleEditUserPopup} setUserData={setUserData}></EditUserPopup>}
         </>
     )
 }

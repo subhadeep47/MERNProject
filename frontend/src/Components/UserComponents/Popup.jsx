@@ -6,7 +6,7 @@ const Popup = ({udata, handlePopup}) => {
             <div className="popupContainer">
                 <div className="popup">
                     <div className='close'>
-                        <button className="closeBtn" onClick={handlePopup}>close</button>
+                        <button className="closeBtn" onClick={handlePopup}>X</button>
                     </div>
                     <div className="userDetails">
                         <h1>Name: {udata.name}</h1>

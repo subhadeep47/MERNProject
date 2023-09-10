@@ -45,11 +45,7 @@ const schema = new mongoose.Schema({
             token:{type:String}
         }
     ],
-    likedMessages:[
-        {
-            msgid:{type:String},
-        }
-    ]
+    likedMessages:[String]
 });
 
 schema.methods.setToken = async function(){
