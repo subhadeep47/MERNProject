@@ -17,7 +17,7 @@ const EditUserPopup = ({data, handleEditUserPopup, setUserData})=>{
         const udata = {_id:data._id,name:editUserData.name,email:editUserData.email,number:editUserData.number};
         axios.post('/edituser', udata).then((res)=>{
             setUserData(res.data);
-            alert('Sucessfully saved your details!!')
+            alert('Sucessfully saved your details!!');
         }).catch((err)=>{
             console.log(err);
         })

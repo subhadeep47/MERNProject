@@ -30,7 +30,7 @@ route.post('/register', (req,res)=>{
 })
 
 route.post('/login', LoginAuth, (req,res)=>{
-    console.log('From login');
+    // console.log('From login');
     res.send(req.user);
 })
 
@@ -68,7 +68,7 @@ route.post('/deletePost', async (req,res)=>{
     try{
         const {msg_id,_id} = req.body;
         await UserData.updateOne({_id:_id},{$pull:{messages:{_id:msg_id}}});
-        await UserData.updateMany({}, {$pull:{likedMessages:{msgid:msg_id}}})
+        await UserData.updateMany({}, {$pull:{likedMessages:msg_id}});
         const data = await UserData.findOne({_id:_id},{pass:0,cpass:0,tokens:0});
         res.send(data);
     }catch(err){

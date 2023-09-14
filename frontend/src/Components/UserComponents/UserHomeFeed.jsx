@@ -4,7 +4,7 @@ import Popup from "./Popup";
 
 const UserHomeFeed = ({data})=>{
     const [postData,setPostData] = useState({_id:'', post:''});
-    const [userData,setUserData] = useState({});
+    const [userData,setUserData] = useState();
     const [feedData, setFeedData] = useState();
     const [popupData, setPopupData] = useState({status:false, data:{}});
     const [isLoading, setIsLoading] = useState(false);
@@ -84,12 +84,23 @@ const UserHomeFeed = ({data})=>{
             </form>
         </div>
         <div className="messageContainer">
-            {isLoading && <div>It's loading</div>}
-            {feedData && feedData.map((item1,ind1)=>{
+            {isLoading && <div className="loading">It's loading</div>}
+            {feedData && !isLoading && feedData.map((item1,ind1)=>{
                 if(item1._id!==userData._id){
                     return(
                         <>
                             {item1.messages.map((item2,ind2)=>{
+                                let style;
+                                if(userData.likedMessages && userData.likedMessages.includes(item2._id)){
+                                    style = {
+                                        color:'blue'
+                                    };
+                                }
+                                else{
+                                    style = {
+                                        
+                                    };
+                                }
                                 return(
                                     <>
                                         <div className="feedPost">
@@ -101,7 +112,7 @@ const UserHomeFeed = ({data})=>{
                                                 {item2.message}<br /><br />Added, {item2.date}
                                             </div>
                                             <div>
-                                                <button className="likeButton" data-userid={item1._id} data-msgid={item2._id} onClick={handleLike}>{item2.like} Like</button>
+                                                <button style={style} className="likeButton" data-userid={item1._id} data-msgid={item2._id} onClick={handleLike}>{item2.like} Like</button>
                                             </div>
                                         </div>
                                     </>
