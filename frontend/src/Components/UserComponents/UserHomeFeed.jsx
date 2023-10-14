@@ -5,6 +5,7 @@ import Popup from "./Popup";
 const UserHomeFeed = ({data})=>{
     const [postData,setPostData] = useState({_id:'', post:''});
     const [userData,setUserData] = useState();
+    const [likedMessages, setLikedMessages] = useState();
     const [feedData, setFeedData] = useState();
     const [popupData, setPopupData] = useState({status:false, data:{}});
     const [isLoading, setIsLoading] = useState(false);
@@ -25,6 +26,7 @@ const UserHomeFeed = ({data})=>{
 
     useEffect(()=>{
         setUserData(data);
+        setLikedMessages(new Set(data.likedMessages));
         setPostData({_id:data._id});
     },[data]);
 
@@ -44,10 +46,11 @@ const UserHomeFeed = ({data})=>{
     }
 
     const handleLike = (e)=>{
-        if(!userData.likedMessages.includes(e.target.dataset.msgid)){
+        if(!likedMessages.has(e.target.dataset.msgid)){
             axios.post('/like',{msg_id:e.target.dataset.msgid,user_id:e.target.dataset.userid,my_id:userData._id}).then((res)=>{
                 setFeedData(res.data.feed);
                 setUserData(res.data.user);
+                likedMessages.add(e.target.dataset.msgid);
             }).catch((err)=>{
                 console.log(err);
             })
@@ -56,6 +59,7 @@ const UserHomeFeed = ({data})=>{
             axios.post('/unlike',{msg_id:e.target.dataset.msgid,user_id:e.target.dataset.userid,my_id:userData._id}).then((res)=>{
                 setFeedData(res.data.feed);
                 setUserData(res.data.user);
+                likedMessages.delete(e.target.dataset.msgid);
             }).catch((err)=>{
                 console.log(err);
             })
@@ -91,7 +95,7 @@ const UserHomeFeed = ({data})=>{
                         <>
                             {item1.messages.map((item2,ind2)=>{
                                 let style;
-                                if(userData.likedMessages && userData.likedMessages.includes(item2._id)){
+                                if(likedMessages && likedMessages.has(item2._id)){
                                     style = {
                                         color:'blue'
                                     };

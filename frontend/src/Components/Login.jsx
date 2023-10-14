@@ -49,30 +49,26 @@ const Login = (props)=> {
 
   return (
     <>
-      <div className="container logincontainer">
-        <div className="row d-flex align-items-center">
-          <div className="col d-flex justify-content-center">
-            <div className="form-box">
-              <h5 className="login-title text-center">Enter your login credential</h5>
-              <form onSubmit={handleSubmit} className="form" method="post">
-                  <div className="mb-3 row">
-                    <label htmlFor="email" className="col-sm-3 col-form-label">Email</label>
-                    <div className="col-sm-8">
-                      <input type="email" className="form-control" id="email" placeholder="email@example.com" name="email" value={udata.name} onChange={handleInput}/>
-                    </div>
-                  </div>
-                  <div className="mb-3 row">
-                    <label htmlFor="pass" className="col-sm-3 col-form-label">Password</label>
-                    <div className="col-sm-8">
-                      <input type="password" className="form-control" id="pass" placeholder="Password" name="pass" value={udata.pass} onChange={handleInput}/>
-                    </div>
-                  </div>
-                  <div className="d-flex justify-content-center">
-                    <button className="btn btn-secondary " type="submit">Submit</button>
-                  </div>
-              </form>
-            </div>
-          </div>
+      <div className="logincontainer">
+        <div className="form-box">
+          <h5 className="login-title text-center">Enter your login credential</h5>
+          <form onSubmit={handleSubmit} className="form" method="post">
+              <div className="mb-3 row">
+                <label htmlFor="email" className="col-sm-3 col-form-label">Email</label>
+                <div className="col-sm-8">
+                  <input type="email" className="form-control" id="email" placeholder="email@example.com" name="email" value={udata.name} onChange={handleInput}/>
+                </div>
+              </div>
+              <div className="mb-3 row">
+                <label htmlFor="pass" className="col-sm-3 col-form-label">Password</label>
+                <div className="col-sm-8">
+                  <input type="password" className="form-control" id="pass" placeholder="Password" name="pass" value={udata.pass} onChange={handleInput}/>
+                </div>
+              </div>
+              <div className="d-flex justify-content-center">
+                <button className="btn btn-secondary " type="submit">Submit</button>
+              </div>
+          </form>
         </div>
       </div>
     </>

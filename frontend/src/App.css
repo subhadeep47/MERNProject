@@ -8,11 +8,12 @@
 
 /* Login.jsx */
 .logincontainer{
-  margin-top: 25vh;
+  display: flex;
+  justify-content: center;
 }
 
 .form-box{
-  width: auto;
+  margin-top: 14%;
   padding: 50px;
   border: 1px solid black;
   border-radius: 10%;
