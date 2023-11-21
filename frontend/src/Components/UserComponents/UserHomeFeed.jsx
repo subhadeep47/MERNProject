@@ -9,6 +9,7 @@ const UserHomeFeed = ({data})=>{
     const [feedData, setFeedData] = useState();
     const [popupData, setPopupData] = useState({status:false, data:{}});
     const [isLoading, setIsLoading] = useState(false);
+    const [showMore, setShowMore] = useState(false);
 
     useEffect(()=>{
         async function fetchFeedData(){
@@ -113,7 +114,10 @@ const UserHomeFeed = ({data})=>{
                                                 {item1.name}
                                             </div>
                                             <div className="feedPostContent">
-                                                {item2.message}<br /><br />Added, {item2.date}
+                                                {showMore ? item2.message+'   ' : item2.message.substring(0,100)+'   '}
+                                                {item2.message.length>100 ? (<button className="showmorebtn" onClick={()=>setShowMore(!showMore)}>
+                                                    {showMore ? "Read less" : "Read more..."}</button>): ''}
+                                                <br /><br />Added, {item2.date}
                                             </div>
                                             <div>
                                                 <button style={style} className="likeButton" data-userid={item1._id} data-msgid={item2._id} onClick={handleLike}>{item2.like} Like</button>

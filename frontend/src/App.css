@@ -119,6 +119,12 @@
   padding: 10px;
 }
 
+.showmorebtn{
+  border: 0;
+  background-color: aquamarine;
+  color: blue;
+}
+
 .likeButton{
   display: inline-block;
   margin-left: 10px;
