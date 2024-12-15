@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Popup from "./Popup";
 
 const UserHomeFeed = ({data})=>{
+    const base_uri = process.env.BASE_URI;
     const [postData,setPostData] = useState({_id:'', post:''});
     const [userData,setUserData] = useState();
     const [likedMessages, setLikedMessages] = useState();
@@ -15,7 +16,7 @@ const UserHomeFeed = ({data})=>{
         async function fetchFeedData(){
             try{
                 setIsLoading(true);
-                const res = await axios.get('/getFeedData');
+                const res = await axios.get(`${base_uri}/getFeedData`);
                 setFeedData(res.data);
                 setIsLoading(false);
             }catch(err){
@@ -37,7 +38,7 @@ const UserHomeFeed = ({data})=>{
 
     const handleSubmit = (e)=>{
         e.preventDefault();
-        axios.post('/addPost', postData).then((res)=>{
+        axios.post(`${base_uri}/addPost`, postData).then((res)=>{
             window.alert('Successfully added the post');
             setPostData({...postData,post:""});
             setUserData(res.data);
@@ -48,7 +49,7 @@ const UserHomeFeed = ({data})=>{
 
     const handleLike = (e)=>{
         if(!likedMessages.has(e.target.dataset.msgid)){
-            axios.post('/like',{msg_id:e.target.dataset.msgid,user_id:e.target.dataset.userid,my_id:userData._id}).then((res)=>{
+            axios.post(`${base_uri}/like`,{msg_id:e.target.dataset.msgid,user_id:e.target.dataset.userid,my_id:userData._id}).then((res)=>{
                 setFeedData(res.data.feed);
                 setUserData(res.data.user);
                 likedMessages.add(e.target.dataset.msgid);
@@ -57,7 +58,7 @@ const UserHomeFeed = ({data})=>{
             })
         }
         else{
-            axios.post('/unlike',{msg_id:e.target.dataset.msgid,user_id:e.target.dataset.userid,my_id:userData._id}).then((res)=>{
+            axios.post(`${base_uri}/unlike`,{msg_id:e.target.dataset.msgid,user_id:e.target.dataset.userid,my_id:userData._id}).then((res)=>{
                 setFeedData(res.data.feed);
                 setUserData(res.data.user);
                 likedMessages.delete(e.target.dataset.msgid);

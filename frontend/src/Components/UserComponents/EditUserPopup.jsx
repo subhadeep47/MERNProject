@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 
 const EditUserPopup = ({data, handleEditUserPopup, setUserData})=>{
+    const base_uri = process.env.BASE_URI;
     const [editUserData, setEditUserData] = useState({
         name:data.name,
         email:data.email,
@@ -15,7 +16,7 @@ const EditUserPopup = ({data, handleEditUserPopup, setUserData})=>{
     const handleEditUser = (e)=>{
         e.preventDefault();
         const udata = {_id:data._id,name:editUserData.name,email:editUserData.email,number:editUserData.number};
-        axios.post('/edituser', udata).then((res)=>{
+        axios.post(`${base_uri}/edituser`, udata).then((res)=>{
             setUserData(res.data);
             alert('Sucessfully saved your details!!');
         }).catch((err)=>{

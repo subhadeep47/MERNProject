@@ -3,6 +3,7 @@ import axios from "axios";
 import EditUserPopup from "./EditUserPopup";
 
 const Profile = ({data}) =>{
+    const base_uri = process.env.BASE_URI;
     const [userData,setUserData] = useState({});
     const [editMessage, setEditMessage] = useState({msg:''});
     const [popupData, setPopupData] = useState({status:false, data:{}})
@@ -14,7 +15,7 @@ const Profile = ({data}) =>{
     const handleDelete = (e)=>{
         if(window.confirm("Are you sure?")){
             const deleteData = {msg_id:e.target.value,_id:userData._id};
-            axios.post('/deletePost', deleteData).then((res)=>{
+            axios.post(`${base_uri}/deletePost`, deleteData).then((res)=>{
                 window.alert('Successfully deleted the post');
                 setUserData(res.data);
             }).catch((err)=>{
@@ -42,7 +43,7 @@ const Profile = ({data}) =>{
     const handleEditMessageSubmit = (e)=>{
         e.preventDefault();
         const data = {msg_id:e.target.dataset.value, msg:editMessage.msg, my_id:userData._id};
-        axios.post('/editmsg', data).then((res)=>{
+        axios.post(`${base_uri}/editmsg`, data).then((res)=>{
             setUserData(res.data);
             document.getElementById('post'+e.target.dataset.value).style.display = 'block';
             document.getElementById('editForm'+e.target.dataset.value).style.display = 'none';

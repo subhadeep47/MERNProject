@@ -4,6 +4,7 @@ import { useNavigate , NavLink } from "react-router-dom";
 import axios from 'axios';
 
 const Signup = ()=>{
+    const base_uri = process.env.BASE_URI;
     const [user, setUser] = useState({
         name:'',
         email: '',
@@ -22,7 +23,7 @@ const Signup = ()=>{
     const handleSubmit = (e)=>{
         e.preventDefault();
         const {name, email, number, pass, cpass} = user;
-        axios.post('/register',{name, email, number, pass, cpass}).then(
+        axios.post(`${base_uri}/register`,{name, email, number, pass, cpass}).then(
             (res)=>{
                     window.alert('Successfully Registered!!');
                     navigate('/login');
