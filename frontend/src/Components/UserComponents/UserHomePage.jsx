@@ -7,7 +7,7 @@ import Profile from "./Profile";
 import { UserContext } from "../../App";
 
 const UserHomePage = () => {
-  const base_uri = process.env.BASE_URI;
+  const base_uri = process.env.REACT_APP_BASE_URI;
   const navigate = useNavigate();
   const { state } = useContext(UserContext);
   const [udata, setUdata] = useState({});

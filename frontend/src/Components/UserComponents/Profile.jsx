@@ -3,7 +3,7 @@ import axios from "axios";
 import EditUserPopup from "./EditUserPopup";
 
 const Profile = ({data}) =>{
-    const base_uri = process.env.BASE_URI;
+    const base_uri = process.env.REACT_APP_BASE_URI;
     const [userData,setUserData] = useState({});
     const [editMessage, setEditMessage] = useState({msg:''});
     const [popupData, setPopupData] = useState({status:false, data:{}})

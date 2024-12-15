@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 
 const EditUserPopup = ({data, handleEditUserPopup, setUserData})=>{
-    const base_uri = process.env.BASE_URI;
+    const base_uri = process.env.REACT_APP_BASE_URI;
     const [editUserData, setEditUserData] = useState({
         name:data.name,
         email:data.email,

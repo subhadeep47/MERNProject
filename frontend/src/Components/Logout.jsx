@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Logout = () =>{
-    const base_uri = process.env.BASE_URI;
+    const base_uri = process.env.REACT_APP_BASE_URI;
     const navigate = useNavigate();
     const {dispatch} = useContext(UserContext);
 

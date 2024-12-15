@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "../App";
 
 const Login = (props)=> {
-  const base_uri = process.env.BASE_URI;
+  const base_uri = process.env.REACT_APP_BASE_URI;
   const navigate = useNavigate();
   const [udata, setUdata] = useState({email:'', pass:''});
   const {dispatch} = useContext(UserContext);

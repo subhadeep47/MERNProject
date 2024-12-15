@@ -4,7 +4,7 @@ import { useNavigate , NavLink } from "react-router-dom";
 import axios from 'axios';
 
 const Signup = ()=>{
-    const base_uri = process.env.BASE_URI;
+    const base_uri = process.env.REACT_APP_BASE_URI;
     const [user, setUser] = useState({
         name:'',
         email: '',

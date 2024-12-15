@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Popup from "./Popup";
 
 const UserHomeFeed = ({data})=>{
-    const base_uri = process.env.BASE_URI;
+    const base_uri = process.env.REACT_APP_BASE_URI;
     const [postData,setPostData] = useState({_id:'', post:''});
     const [userData,setUserData] = useState();
     const [likedMessages, setLikedMessages] = useState();
