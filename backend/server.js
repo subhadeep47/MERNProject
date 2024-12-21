@@ -9,12 +9,11 @@ dotenv.config({path:'./config.env'});
 //using middlewires for all routing paths using express router
 app.use(require('./router/route'));
 
-const corsOption = {
-    origin: ['https://social-app-backend-vcwx.onrender.com'],
+app.use(cors({
+    origin: 'https://social-app-frontend-2l19.onrender.com',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE"],
-}
-app.use(cors(corsOption));
+}));
 
 PORT = process.env.PORT
 
