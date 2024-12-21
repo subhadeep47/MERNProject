@@ -6,14 +6,14 @@ const app = express();
 const dotenv = require('dotenv');
 dotenv.config({path:'./config.env'});
 
-//using middlewires for all routing paths using express router
-app.use(require('./router/route'));
-
 app.use(cors({
     origin: 'https://social-app-frontend-2l19.onrender.com',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
 }));
+
+//using middlewires for all routing paths using express router
+app.use(require('./router/route'));
 
 PORT = process.env.PORT
 
