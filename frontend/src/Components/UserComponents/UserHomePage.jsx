@@ -1,13 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
-import axios from "axios";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import UserNavbar from "./UserNavbar";
 import UserHomeFeed from "./UserHomeFeed";
 import Profile from "./Profile";
 import { UserContext } from "../../App";
+import api from "../../api";
 
 const UserHomePage = () => {
-  const base_uri = process.env.REACT_APP_BASE_URI;
   const navigate = useNavigate();
   const { state } = useContext(UserContext);
   const [udata, setUdata] = useState({});
@@ -15,7 +14,7 @@ const UserHomePage = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await axios.get(`${base_uri}/getdata`, { withCredentials: true });
+        const res = await api.get(`/getdata`, { withCredentials: true });
         if (res.data.message === "Not signed in") {
           window.alert("You are not signed in!!");
           navigate("/login");

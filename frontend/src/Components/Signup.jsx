@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import register from '../Image/register.jpg'
 import { useNavigate , NavLink } from "react-router-dom";
-import axios from 'axios';
+import api from "../api";
 
 const Signup = ()=>{
-    const base_uri = process.env.REACT_APP_BASE_URI;
     const [user, setUser] = useState({
         name:'',
         email: '',
@@ -23,7 +22,7 @@ const Signup = ()=>{
     const handleSubmit = (e)=>{
         e.preventDefault();
         const {name, email, number, pass, cpass} = user;
-        axios.post(`${base_uri}/register`,{name, email, number, pass, cpass}).then(
+        api.post(`/register`,{name, email, number, pass, cpass}).then(
             (res)=>{
                     window.alert('Successfully Registered!!');
                     navigate('/login');

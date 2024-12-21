@@ -1,10 +1,9 @@
-import axios from "axios";
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../App";
+import api from "../api";
 
 const Login = (props)=> {
-  const base_uri = process.env.REACT_APP_BASE_URI;
   const navigate = useNavigate();
   const [udata, setUdata] = useState({email:'', pass:''});
   const {dispatch} = useContext(UserContext);
@@ -12,7 +11,7 @@ const Login = (props)=> {
   useEffect(()=>{
       async function fetchData(){
         try{
-          const res = await axios.get(`${base_uri}/getdata`, {withCredentials:true});
+          const res = await api.get(`/getdata`, {withCredentials:true});
           if(res.data.message==='Not signed in'){
             console.log("fetchdata");
             console.log(res.data.message);
@@ -35,7 +34,7 @@ const Login = (props)=> {
 
   const handleSubmit = (e)=>{
     e.preventDefault();
-    axios.post(`${base_uri}/login`, udata).then((res)=>{
+    api.post(`/login`, udata).then((res)=>{
       console.log(res);
       window.localStorage.setItem('isLoggedIn', true);
       dispatch({type:'user', value:{isLoggedIn:true}});
