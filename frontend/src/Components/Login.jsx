@@ -42,8 +42,8 @@ const Login = (props)=> {
       dispatch({type:'user', value:{isLoggedIn:true}});
       navigate(`/userhomepage/${res.data.name}`);
     }).catch(err=>{
-        console.log(err);s
-        window.alert(err.response.data.error);
+        console.log(err);
+        window.alert(err);
         navigate('/login');
       })
     
