@@ -7,7 +7,7 @@ const dotenv = require('dotenv');
 dotenv.config({path:'./config.env'});
 
 app.use(cors({
-    origin: 'https://social-app-frontend-2l19.onrender.com',
+    origin: ['https://social-app-frontend-2l19.onrender.com', 'http://localhost:3000'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
 }));
