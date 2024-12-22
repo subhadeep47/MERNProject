@@ -3,7 +3,6 @@ const route = express.Router();
 const Check = require('../middleware/Check');
 const LoginAuth = require('../middleware/LoginAuthenticate');
 const cookieParser = require('cookie-parser');
-const path = require('path');
 
 //getting the database connection with respect to the collection in database
 const UserData = require('../database/connection');
@@ -11,10 +10,6 @@ const UserAuth = require('../middleware/UserAuthenticate');
 
 route.use(cookieParser());
 route.use(express.json());
-
-route.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
 
 route.get('/',Check, (req,res)=>{
     console.log('from path');
