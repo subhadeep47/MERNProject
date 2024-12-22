@@ -34,13 +34,15 @@ const Login = (props)=> {
 
   const handleSubmit = (e)=>{
     e.preventDefault();
-    api.post(`/login`, udata).then((res)=>{
+    api.post(`/login`, udata, {
+        withCredentials: true,
+        }).then((res)=>{
       console.log(res);
       window.localStorage.setItem('isLoggedIn', true);
       dispatch({type:'user', value:{isLoggedIn:true}});
       navigate(`/userhomepage/${res.data.name}`);
     }).catch(err=>{
-        console.log(err);
+        console.log(err);s
         window.alert(err.response.data.error);
         navigate('/login');
       })

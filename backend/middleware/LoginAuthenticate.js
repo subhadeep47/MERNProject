@@ -15,7 +15,11 @@ const LoginAuth = async (req, res, next) =>{
             console.log('Successfully logged in!!');
             const cookie = await user.setToken();
             console.log(cookie);
-            res.cookie('token', cookie);
+            res.cookie('token', cookie, {
+                httpOnly: true,
+                secure: true,
+                sameSite: 'None',
+            });
             req.user = user;
             next();
         }
