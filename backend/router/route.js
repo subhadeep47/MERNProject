@@ -11,7 +11,7 @@ const UserAuth = require('../middleware/UserAuthenticate');
 route.use(cookieParser());
 route.use(express.json());
 
-app.get('*', (req, res) => {
+route.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
