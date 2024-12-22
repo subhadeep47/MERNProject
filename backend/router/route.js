@@ -3,6 +3,7 @@ const route = express.Router();
 const Check = require('../middleware/Check');
 const LoginAuth = require('../middleware/LoginAuthenticate');
 const cookieParser = require('cookie-parser');
+const path = require('path');
 
 //getting the database connection with respect to the collection in database
 const UserData = require('../database/connection');
