@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import api from "../../api";
+import { hideLoader, showLoader } from "../../Actions/generalActions";
 
 const EditUserPopup = ({data, handleEditUserPopup, setUserData})=>{
     const [editUserData, setEditUserData] = useState({
@@ -14,12 +15,15 @@ const EditUserPopup = ({data, handleEditUserPopup, setUserData})=>{
 
     const handleEditUser = (e)=>{
         e.preventDefault();
+        showLoader();
         const udata = {_id:data._id,name:editUserData.name,email:editUserData.email,number:editUserData.number};
         api.post(`/edituser`, udata).then((res)=>{
             setUserData(res.data);
+            hideLoader();
             alert('Sucessfully saved your details!!');
         }).catch((err)=>{
             console.log(err);
+            hideLoader();
         })
     }
 

@@ -134,5 +134,12 @@ route.post('/edituser', async (req, res)=>{
     }
 })
 
+route.get('/check-login', (req, res) => {
+    if (req.cookies.token) {
+      res.json({ loggedIn: true });
+    } else {
+      res.json({ loggedIn: false });
+    }
+  });
 
 module.exports = route;

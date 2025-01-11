@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Popup from "./Popup";
 import api from "../../api";
+import { hideLoader, showLoader } from "../../Actions/generalActions";
 
 const UserHomeFeed = ({data})=>{
     const [postData,setPostData] = useState({_id:'', post:''});
@@ -8,16 +9,15 @@ const UserHomeFeed = ({data})=>{
     const [likedMessages, setLikedMessages] = useState();
     const [feedData, setFeedData] = useState();
     const [popupData, setPopupData] = useState({status:false, data:{}});
-    const [isLoading, setIsLoading] = useState(false);
     const [showMore, setShowMore] = useState(false);
 
     useEffect(()=>{
         async function fetchFeedData(){
             try{
-                setIsLoading(true);
+                showLoader();
                 const res = await api.get(`/getFeedData`);
                 setFeedData(res.data);
-                setIsLoading(false);
+                hideLoader();
             }catch(err){
                 console.log(err);
             }
@@ -37,11 +37,14 @@ const UserHomeFeed = ({data})=>{
 
     const handleSubmit = (e)=>{
         e.preventDefault();
+        showLoader();
         api.post(`/addPost`, postData).then((res)=>{
             window.alert('Successfully added the post');
             setPostData({...postData,post:""});
             setUserData(res.data);
+            hideLoader();
         }).catch((err)=>{
+            hideLoader();
             window.alert('There is some error occurred during adding your post!!');
         })
     }

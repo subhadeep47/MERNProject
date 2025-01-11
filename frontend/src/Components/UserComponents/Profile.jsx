@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import EditUserPopup from "./EditUserPopup";
 import api from "../../api";
+import { hideLoader, showLoader } from "../../Actions/generalActions";
 
 const Profile = ({data}) =>{
     const [userData,setUserData] = useState({});
@@ -14,10 +15,13 @@ const Profile = ({data}) =>{
     const handleDelete = (e)=>{
         if(window.confirm("Are you sure?")){
             const deleteData = {msg_id:e.target.value,_id:userData._id};
+            showLoader();
             api.post(`/deletePost`, deleteData).then((res)=>{
+                hideLoader();
                 window.alert('Successfully deleted the post');
                 setUserData(res.data);
             }).catch((err)=>{
+                hideLoader();
                 window.alert(err.response.data.err);
             })
         }
@@ -42,12 +46,15 @@ const Profile = ({data}) =>{
     const handleEditMessageSubmit = (e)=>{
         e.preventDefault();
         const data = {msg_id:e.target.dataset.value, msg:editMessage.msg, my_id:userData._id};
+        showLoader();
         api.post(`/editmsg`, data).then((res)=>{
             setUserData(res.data);
             document.getElementById('post'+e.target.dataset.value).style.display = 'block';
             document.getElementById('editForm'+e.target.dataset.value).style.display = 'none';
+            hideLoader();
         }).catch((err)=>{
             console.log(err);
+            hideLoader();
         })
     }
 

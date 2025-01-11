@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../App";
 import api from "../api";
+import { hideLoader, showLoader } from "../Actions/generalActions";
 
 const Login = (props)=> {
   const navigate = useNavigate();
@@ -11,16 +12,20 @@ const Login = (props)=> {
   useEffect(()=>{
       async function fetchData(){
         try{
+          showLoader();
           const res = await api.get(`/getdata`, {withCredentials:true});
           if(res.data.message==='Not signed in'){
             console.log("fetchdata");
             console.log(res.data.message);
+            hideLoader();
           }
           else{
+            hideLoader();
             navigate(`/userhomepage/${res.data.name}`);
           }
         }catch(err){
           console.log(err);
+          hideLoader();
         }
       }
       fetchData();
@@ -34,17 +39,19 @@ const Login = (props)=> {
 
   const handleSubmit = (e)=>{
     e.preventDefault();
+    showLoader();
     api.post(`/login`, udata, {
         withCredentials: true,
         }).then((res)=>{
       console.log(res);
-      window.localStorage.setItem('isLoggedIn', true);
+      hideLoader();
       dispatch({type:'user', value:{isLoggedIn:true}});
       navigate(`/userhomepage/${res.data.name}`);
     }).catch(err=>{
         console.log(err);
         window.alert(err);
         navigate('/login');
+        hideLoader();
       })
     
   }

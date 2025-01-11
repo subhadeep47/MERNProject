@@ -2,6 +2,7 @@ import React, {useEffect, useContext} from "react";
 import { UserContext } from "../App";
 import { useNavigate } from "react-router-dom";
 import api from "../api";
+import { showLoader } from "../Actions/generalActions";
 
 const Logout = () =>{
     const navigate = useNavigate();
@@ -10,10 +11,11 @@ const Logout = () =>{
     useEffect(()=>{
         dispatch({type:'user', value:{isLoggedIn:false}});
         async function deleteData(){
+            showLoader();
             const res = await api.get(`/logout`,{withCredentials:true});
             console.log(res);
-            window.localStorage.removeItem('isLoggedIn');
             navigate('/login');
+            hideLoader();
         }
         deleteData();
     }, []);

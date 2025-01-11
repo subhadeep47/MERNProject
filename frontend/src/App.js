@@ -8,6 +8,7 @@ import UserHomePage from "./Components/UserComponents/UserHomePage";
 import ErrorPage from "./Components/ErrorPage";
 import Logout from "./Components/Logout";
 import { reducer, initialvalue } from "./Reducer/reducer";
+import Loader from "./Components/UserComponents/Loader";
 
 
 export const UserContext = createContext();
@@ -27,6 +28,7 @@ const App = ()=> {
           <Route exact path="/logout" element={<Logout/>}/>
           <Route path='*' element={<ErrorPage/>}/>
         </Routes>
+        <Loader />
       </UserContext.Provider>
     </>
   );

@@ -5,6 +5,7 @@ import UserHomeFeed from "./UserHomeFeed";
 import Profile from "./Profile";
 import { UserContext } from "../../App";
 import api from "../../api";
+import { hideLoader, showLoader } from "../../Actions/generalActions";
 
 const UserHomePage = () => {
   const navigate = useNavigate();
@@ -14,16 +15,20 @@ const UserHomePage = () => {
   useEffect(() => {
     async function fetchData() {
       try {
+        showLoader();
         const res = await api.get(`/getdata`, { withCredentials: true });
         if (res.data.message === "Not signed in") {
           window.alert("You are not signed in!!");
           navigate("/login");
+          hideLoader();
         } else {
           setUdata(res.data);
           navigate(window.location.pathname);
+          hideLoader();
         }
       } catch (err) {
         console.log("not signed in");
+        hideLoader();
       }
     }
     fetchData();

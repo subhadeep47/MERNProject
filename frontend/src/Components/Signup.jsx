@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import register from '../Image/register.jpg'
 import { useNavigate , NavLink } from "react-router-dom";
 import api from "../api";
+import { hideLoader, showLoader } from "../Actions/generalActions";
 
 const Signup = ()=>{
     const [user, setUser] = useState({
@@ -22,15 +23,18 @@ const Signup = ()=>{
     const handleSubmit = (e)=>{
         e.preventDefault();
         const {name, email, number, pass, cpass} = user;
+        showLoader();
         api.post(`/register`,{name, email, number, pass, cpass}).then(
             (res)=>{
                     window.alert('Successfully Registered!!');
                     navigate('/login');
+                    hideLoader();
             }
         ).catch((err)=>{
             window.alert('There is some problem to register the user');
             console.log('Problem with '+ err)
             navigate('/login');
+            hideLoader();
         }
         );
     };
