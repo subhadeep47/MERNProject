@@ -8,6 +8,7 @@ const UserHomeFeed = ({data})=>{
     const [userData,setUserData] = useState();
     const [likedMessages, setLikedMessages] = useState();
     const [feedData, setFeedData] = useState();
+    const [isLoading, setIsLoading] = useState(false);
     const [popupData, setPopupData] = useState({status:false, data:{}});
     const [showMore, setShowMore] = useState(false);
 
@@ -15,9 +16,11 @@ const UserHomeFeed = ({data})=>{
         async function fetchFeedData(){
             try{
                 showLoader();
+                setIsLoading(true);
                 const res = await api.get(`/getFeedData`);
                 setFeedData(res.data);
                 hideLoader();
+                setIsLoading(false);
             }catch(err){
                 console.log(err);
             }
@@ -92,7 +95,6 @@ const UserHomeFeed = ({data})=>{
             </form>
         </div>
         <div className="messageContainer">
-            {isLoading && <div className="loading">It's loading</div>}
             {feedData && !isLoading && feedData.map((item1,ind1)=>{
                 if(item1._id!==userData._id){
                     return(
