@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
-import UserNavbar from "./UserNavbar";
 import UserHomeFeed from "./UserHomeFeed";
 import Profile from "./Profile";
 import { UserContext } from "../../App";
@@ -36,7 +35,6 @@ const UserHomePage = () => {
 
   return (
     <>
-      {state.isLoggedIn ? <UserNavbar /> : ""}
       <Routes>
         <Route exact path="/" element={<UserHomeFeed data={udata} />} />
         <Route exact path="/profile" element={<Profile data={udata} />} />
