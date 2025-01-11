@@ -2,7 +2,7 @@ import React, {useEffect, useContext} from "react";
 import { UserContext } from "../App";
 import { useNavigate } from "react-router-dom";
 import api from "../api";
-import { showLoader } from "../Actions/generalActions";
+import { hideLoader, showLoader } from "../Actions/generalActions";
 
 const Logout = () =>{
     const navigate = useNavigate();
