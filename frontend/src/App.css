@@ -72,13 +72,23 @@
   margin-top: 20px;
 }
 
+.buttonBox{
+  margin-top: 10px;
+  margin-left: 20px;
+}
+
+.anonymousLabel{
+  margin-right: 50px;
+}
+
+.anonymousInput{
+  margin-right: 5px;
+}
+
 .addButton{
   height: 30px;
   width: 50px;
-  margin-top: 10px;
-  margin-left: 50%;
   border-radius: 15px;
-  transform: translate(-50%,-50%);
 }
 
 .messageContainer{

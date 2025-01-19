@@ -10,11 +10,9 @@ const LoginAuth = async (req, res, next) =>{
     try{
         const {email, pass} = req.body;
         const user = await UserData.findOne({email:email});
-        console.log(user);
         if(pass===user.pass){
             console.log('Successfully logged in!!');
             const cookie = await user.setToken();
-            console.log(cookie);
             res.cookie('token', cookie, {
                 httpOnly: true,
                 secure: true,

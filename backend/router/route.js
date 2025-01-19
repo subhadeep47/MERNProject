@@ -17,7 +17,6 @@ route.get('/',Check, (req,res)=>{
 })
 
 route.post('/register', (req,res)=>{
-    console.log(req.body);
     const data = new UserData(req.body);
     data.save().then(()=>{
         console.log('Successfully registered');
@@ -29,12 +28,10 @@ route.post('/register', (req,res)=>{
 })
 
 route.post('/login', LoginAuth, (req,res)=>{
-    // console.log('From login');
     res.send(req.user);
 })
 
 route.get('/getdata', UserAuth, (req,res)=>{
-    // console.log("from getdata");
     res.send(req.user);
 })
 
@@ -47,7 +44,7 @@ route.get('/logout', UserAuth, async (req,res)=>{
 
 route.post('/addPost', async (req,res)=>{
     try{
-        const {_id, post} = req.body;
+        const {_id, post, isAnonymous} = req.body;
         let currentdate = new Date(); 
         let datetime = currentdate.getDate() + "/"
                 + (currentdate.getMonth()+1)  + "/" 
@@ -55,10 +52,12 @@ route.post('/addPost', async (req,res)=>{
                 + currentdate.getHours() + ":"  
                 + currentdate.getMinutes() + ":" 
                 + currentdate.getSeconds();
-        await UserData.updateOne({_id:_id},{$push:{messages:{message:post,like:0,date:datetime}}});
+        await UserData.updateOne({_id:_id},{$push:{messages:{message:post,like:0,date:datetime,isAnonymous:isAnonymous}}});
         const data = await UserData.findOne({_id:_id},{pass:0,cpass:0,tokens:0});
         res.send(data);
     }catch(err){
+        console.log(err);
+        
         res.status(401).json({err:"Problem with adding post"});
     }
 })
@@ -93,7 +92,6 @@ route.post('/like', async (req,res)=>{
         const data = {feed:feed,user:user};
         res.send(data);
     }catch(err){
-        console.log(err);
         res.status(401).json({err:err});
     }
 })
@@ -107,7 +105,6 @@ route.post('/unlike', async (req,res)=>{
         const data = {feed:feed,user:user};
         res.send(data);
     }catch(err){
-        console.log(err);
         res.status(401).json({err:err});
     }
 })
@@ -136,9 +133,9 @@ route.post('/edituser', async (req, res)=>{
 
 route.get('/check-login', (req, res) => {
     if (req.cookies.token) {
-      res.json({ loggedIn: true });
+      res.send({ loggedIn: true });
     } else {
-      res.json({ loggedIn: false });
+      res.send({ loggedIn: false });
     }
   });
 

@@ -5,6 +5,7 @@ import Profile from "./Profile";
 import { UserContext } from "../../App";
 import api from "../../api";
 import { hideLoader, showLoader } from "../../Actions/generalActions";
+import UserNavbar from "./UserNavbar";
 
 const UserHomePage = () => {
   const navigate = useNavigate();
@@ -35,6 +36,7 @@ const UserHomePage = () => {
 
   return (
     <>
+      {state.isLoggedIn ? <UserNavbar /> : ""}
       <Routes>
         <Route exact path="/" element={<UserHomeFeed data={udata} />} />
         <Route exact path="/profile" element={<Profile data={udata} />} />

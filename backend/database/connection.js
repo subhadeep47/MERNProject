@@ -37,7 +37,8 @@ const schema = new mongoose.Schema({
         {
             message:{type:String},
             like:{type:Number},
-            date:{type:String}
+            date:{type:String},
+            isAnonymous:{type:Boolean}
         }
     ],
     tokens:[
@@ -50,7 +51,6 @@ const schema = new mongoose.Schema({
 
 schema.methods.setToken = async function(){
     try{
-        console.log("from connection");
         const token = jwt.sign({_id:this._id}, process.env.SECRET_KEY);
         this.tokens = this.tokens.concat({token});
         await this.save();

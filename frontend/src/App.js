@@ -5,7 +5,6 @@ import Navbar from './Components/Navbar';
 import Home from "./Components/Home";
 import Signup from './Components/Signup';
 import UserHomePage from "./Components/UserComponents/UserHomePage";
-import UserNavbar from "./Components/UserComponents/UserNavbar";
 import ErrorPage from "./Components/ErrorPage";
 import Logout from "./Components/Logout";
 import { reducer, initialvalue } from "./Reducer/reducer";
@@ -19,24 +18,22 @@ const App = ()=> {
   const [state, dispatch] = useReducer(reducer, initialvalue);
 
   useEffect(async ()=>{
-    async function isUserLoggedIn() {
-        try {
-            const response = await api.get('/check-login',{withCredentials:true});
-            const data = await response.json();
-            return data.loggedIn;
-        } catch (error) {
-            console.error('Error checking login status:', error);
-            return false;
+      async function isUserLoggedIn() {
+            api.get('/check-login',{withCredentials:true}).then(res => {
+              dispatch({type:'user', value:{isLoggedIn:res.data.loggedIn}});
+            }).catch(err => {
+              console.error('Error checking login status:', err);
+              dispatch({type:'user', value:{isLoggedIn:false}});
+              return false;
+            });
         }
-      }
-      const value = await isUserLoggedIn();
-      dispatch({type:'user', value:{isLoggedIn:value}});
+      await isUserLoggedIn();
   }, []);
 
   return (
     <>
       <UserContext.Provider value={{state,dispatch}}>
-        {!state.isLoggedIn ? <Navbar/> : <UserNavbar />}
+        {!state.isLoggedIn ? <Navbar/> : ''}
         <Routes>
           <Route exact path="/" element={<Home/>}/>
           <Route exact path="/login" element={<Login/>}/>

@@ -4,7 +4,7 @@ import api from "../../api";
 import { hideLoader, showLoader } from "../../Actions/generalActions";
 
 const UserHomeFeed = ({data})=>{
-    const [postData,setPostData] = useState({_id:'', post:''});
+    const [postData,setPostData] = useState({_id:'', post:'', isAnonymous:false});
     const [userData,setUserData] = useState();
     const [likedMessages, setLikedMessages] = useState();
     const [feedData, setFeedData] = useState();
@@ -35,7 +35,11 @@ const UserHomeFeed = ({data})=>{
     },[data]);
 
     const handleInput = (e)=>{
-        setPostData({...postData,post:e.target.value});
+        const { name, value, type, checked } = e.target;
+        setPostData((prevData) => ({
+        ...prevData,
+        [name]: type === 'checkbox' ? checked : value,
+        }));
     }
 
     const handleSubmit = (e)=>{
@@ -90,8 +94,12 @@ const UserHomeFeed = ({data})=>{
         <>
         <div className="addPostContainer">
             <form id="postForm" onSubmit={handleSubmit} method="post">
-                <textarea id='postBox' className='postBox' form="postForm" rows='7' cols='50' placeholder="Enter your post" required onChange={handleInput} value={postData.post}/><br/>
-                <button className="addButton" type="submit">Post</button>
+                <textarea id='postBox' className='postBox' form="postForm" rows='7' cols='50' name="post" placeholder="Enter your post" required onChange={handleInput} value={postData.post}/><br/>
+                <div className="buttonBox">
+                    <input type="checkBox" className="anonymousInput" id="anonymous" name="isAnonymous" onChange={handleInput} checked={postData.isAnonymous}/>
+                    <label htmlFor="anonymous" className="anonymousLabel">Stay Anonymous?</label>
+                    <button className="addButton" type="submit">Post</button>
+                </div>
             </form>
         </div>
         <div className="messageContainer">
@@ -116,7 +124,7 @@ const UserHomeFeed = ({data})=>{
                                         <div className="feedPost">
                                             <div className="userName" onClick={handlePopup} data-username={item1.name}
                                             data-useremail={item1.email} data-usernumber={item1.number}>
-                                                {item1.name}
+                                                {item2.isAnonymous ? 'Anonymous' : item1.name}
                                             </div>
                                             <div className="feedPostContent">
                                                 {showMore ? item2.message+'   ' : item2.message.substring(0,100)+'   '}
