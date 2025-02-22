@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Popup from "./Popup";
 import api from "../../api";
 import { hideLoader, showLoader } from "../../Actions/generalActions";
+import FeedPost from "./FeedPost";
 
 const UserHomeFeed = ({data})=>{
     const [postData,setPostData] = useState({_id:'', post:'', isAnonymous:false});
@@ -10,7 +11,6 @@ const UserHomeFeed = ({data})=>{
     const [feedData, setFeedData] = useState();
     const [isLoading, setIsLoading] = useState(false);
     const [popupData, setPopupData] = useState({status:false, data:{}});
-    const [showMore, setShowMore] = useState(false);
 
     useEffect(()=>{
         async function fetchFeedData(){
@@ -121,21 +121,16 @@ const UserHomeFeed = ({data})=>{
                                 }
                                 return(
                                     <>
-                                        <div className="feedPost">
-                                            <div className="userName" onClick={handlePopup} data-username={item1.name}
-                                            data-useremail={item1.email} data-usernumber={item1.number}>
-                                                {item2.isAnonymous ? 'Anonymous' : item1.name}
-                                            </div>
-                                            <div className="feedPostContent">
-                                                {showMore ? item2.message+'   ' : item2.message.substring(0,100)+'   '}
-                                                {item2.message.length>100 ? (<button className="showmorebtn" onClick={()=>setShowMore(!showMore)}>
-                                                    {showMore ? "Read less" : "Read more..."}</button>): ''}
-                                                <br /><br />Added, {item2.date}
-                                            </div>
-                                            <div>
-                                                <button style={style} className="likeButton" data-userid={item1._id} data-msgid={item2._id} onClick={handleLike}>{item2.like} Like</button>
-                                            </div>
-                                        </div>
+                                        <FeedPost
+                                            username={item1.name}
+                                            useremail={item1.email}
+                                            usernumber={item1.number}
+                                            userid={item1._id}
+                                            message={item2}
+                                            style={style}
+                                            handleLike={handleLike}
+                                            handlePopup={handlePopup}
+                                        />
                                     </>
                                 )
                             })}
