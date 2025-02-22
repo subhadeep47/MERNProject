@@ -108,15 +108,10 @@ const UserHomeFeed = ({data})=>{
                     return(
                         <>
                             {item1.messages.map((item2,ind2)=>{
-                                let style;
+                                let style = {};
                                 if(likedMessages && likedMessages.has(item2._id)){
                                     style = {
                                         color:'blue'
-                                    };
-                                }
-                                else{
-                                    style = {
-                                        
                                     };
                                 }
                                 return(
