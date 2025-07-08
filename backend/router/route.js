@@ -44,20 +44,24 @@ route.get('/logout', UserAuth, async (req,res)=>{
 
 route.post('/addPost', async (req,res)=>{
     try{
-        const {_id, post, isAnonymous} = req.body;
-        let currentdate = new Date(); 
-        let datetime = currentdate.getDate() + "/"
-                + (currentdate.getMonth()+1)  + "/" 
-                + currentdate.getFullYear() + " @ "  
-                + currentdate.getHours() + ":"  
-                + currentdate.getMinutes() + ":" 
-                + currentdate.getSeconds();
-        await UserData.updateOne({_id:_id},{$push:{messages:{message:post,like:0,date:datetime,isAnonymous:isAnonymous}}});
-        const data = await UserData.findOne({_id:_id},{pass:0,cpass:0,tokens:0});
+        const { _id, post, isAnonymous } = req.body;
+        const newMessage = {
+            message: post,
+            like: 0,
+            date: new Date(),
+            isAnonymous
+        };
+        await UserData.updateOne(
+            { _id: _id },
+            { $push: { messages: newMessage } }
+        );
+        const data = await UserData.findOne(
+            { _id: _id },
+            { pass: 0, cpass: 0, tokens: 0 }
+        );
         res.send(data);
     }catch(err){
         console.log(err);
-        
         res.status(401).json({err:"Problem with adding post"});
     }
 })
@@ -76,7 +80,23 @@ route.post('/deletePost', async (req,res)=>{
 
 route.get('/getFeedData', async (req,res)=>{
     try{
-        const data = await UserData.find({},{pass:0,cpass:0,tokens:0}).sort({'messages.date':-1});
+        const data = await UserData.aggregate([
+            { $unwind: "$messages" },
+            {
+                $project: {
+                    _id:1,
+                    name: 1,
+                    email: 1,
+                    number: 1,
+                    "messages.message": 1,
+                    "messages.like": 1,
+                    "messages.date": 1,
+                    "messages.isAnonymous": 1,
+                    "messages._id": 1
+                }
+            },
+            { $sort: { "messages.date": -1 } },
+        ]);
         res.send(data);
     }catch(err){
         res.status(401).json({err:"Problem with getting data"});
@@ -87,7 +107,23 @@ route.post('/like', async (req,res)=>{
     try{
         await UserData.updateOne({'messages._id':req.body.msg_id},{$inc:{'messages.$.like':1}});
         await UserData.updateOne({_id:req.body.my_id},{$push:{likedMessages:req.body.msg_id}});
-        const feed = await UserData.find({},{pass:0,cpass:0,tokens:0}).sort({'messages.date':-1});
+        const feed = await UserData.aggregate([
+            { $unwind: "$messages" },
+            {
+                $project: {
+                    _id:1,
+                    name: 1,
+                    email: 1,
+                    number: 1,
+                    "messages.message": 1,
+                    "messages.like": 1,
+                    "messages.date": 1,
+                    "messages.isAnonymous": 1,
+                    "messages._id": 1
+                }
+            },
+            { $sort: { "messages.date": -1 } },
+        ]);
         const user = await UserData.findOne({_id:req.body.my_id},{pass:0,cpass:0,tokens:0});
         const data = {feed:feed,user:user};
         res.send(data);
@@ -100,7 +136,23 @@ route.post('/unlike', async (req,res)=>{
     try{
         await UserData.updateOne({'messages._id':req.body.msg_id},{$inc:{'messages.$.like':-1}});
         await UserData.updateOne({_id:req.body.my_id},{$pull:{likedMessages:req.body.msg_id}});
-        const feed = await UserData.find({},{pass:0,cpass:0,tokens:0}).sort({'messages.date':-1});
+        const feed = await UserData.aggregate([
+            { $unwind: "$messages" },
+            {
+                $project: {
+                    _id:1,
+                    name: 1,
+                    email: 1,
+                    number: 1,
+                    "messages.message": 1,
+                    "messages.like": 1,
+                    "messages.date": 1,
+                    "messages.isAnonymous": 1,
+                    "messages._id": 1
+                }
+            },
+            { $sort: { "messages.date": -1 } },
+        ]);
         const user = await UserData.findOne({_id:req.body.my_id},{pass:0,cpass:0,tokens:0});
         const data = {feed:feed,user:user};
         res.send(data);

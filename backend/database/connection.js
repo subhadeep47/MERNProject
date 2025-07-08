@@ -37,7 +37,7 @@ const schema = new mongoose.Schema({
         {
             message:{type:String},
             like:{type:Number},
-            date:{type:String},
+            date:{type:Date},
             isAnonymous:{type:Boolean}
         }
     ],

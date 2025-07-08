@@ -85,7 +85,8 @@ const UserHomeFeed = ({data})=>{
             setPopupData({status:true,data:{
                 name:e.target.dataset.username,
                 email:e.target.dataset.useremail,
-                number:e.target.dataset.usernumber
+                number:e.target.dataset.usernumber,
+                isAnonymous:e.target.dataset.isanonymous
             }});
         }
     }
@@ -103,37 +104,30 @@ const UserHomeFeed = ({data})=>{
             </form>
         </div>
         <div className="messageContainer">
-            {feedData && !isLoading && feedData.map((item1,ind1)=>{
-                if(item1._id!==userData._id){
+            {feedData && !isLoading && feedData.map((post,ind1)=>{
+                let style = {};
+                if(likedMessages && likedMessages.has(post.messages._id)){
+                    style = {
+                        color:'blue'
+                    };
+                }
+                if(post._id!==userData._id){
                     return(
                         <>
-                            {item1.messages.map((item2,ind2)=>{
-                                let style = {};
-                                if(likedMessages && likedMessages.has(item2._id)){
-                                    style = {
-                                        color:'blue'
-                                    };
-                                }
-                                return(
-                                    <>
-                                        <FeedPost
-                                            username={item1.name}
-                                            useremail={item1.email}
-                                            usernumber={item1.number}
-                                            userid={item1._id}
-                                            message={item2}
-                                            style={style}
-                                            handleLike={handleLike}
-                                            handlePopup={handlePopup}
-                                        />
-                                    </>
-                                )
-                            })}
-                        </> 
+                            <FeedPost
+                                username={post.name}
+                                useremail={post.email}
+                                usernumber={post.number}
+                                userid={post._id}
+                                message={post.messages}
+                                style={style}
+                                handleLike={handleLike}
+                                handlePopup={handlePopup}
+                            />
+                        </>
                     )
-                }
-                else{
-                    return(null);
+                } else {
+                    return null;
                 }
             })}
             {popupData.status && (<Popup udata = {popupData.data} handlePopup={handlePopup} />)}

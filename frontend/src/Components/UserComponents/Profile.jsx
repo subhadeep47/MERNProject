@@ -67,6 +67,16 @@ const Profile = ({data}) =>{
         }
     }
 
+    const getDateFormat = date => {
+        let formattedDate = date.getDate() + "/"
+                + (date.getMonth()+1)  + "/" 
+                + date.getFullYear() + " @ "  
+                + date.getHours() + ":"  
+                + date.getMinutes() + ":" 
+                + date.getSeconds();
+        return formattedDate;
+    }
+
     return(
         <>
             <h1 className="text-center">This is {userData.name}'s profile page</h1>
@@ -84,7 +94,7 @@ const Profile = ({data}) =>{
                                 <div id={postId} className="postContent">
                                     <div className="postMsg">
                                         {post.message} <br /><br />
-                                        Date added, {post.date}
+                                        Date added, {getDateFormat(new Date(post.date))}
                                     </div><br/>
                                     <div className="totalLike">
                                     Total like, {post.like}
